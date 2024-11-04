@@ -10,6 +10,6 @@ public class Chocolate extends Produto {
 
     @Override
     public String getDetalhes() {
-        return "Chocolate " + tipoCacau + " - Ola: " + marca;
+        return "Chocolate " + tipoCacau + " - Adeus: " + marca;
     }
 }
