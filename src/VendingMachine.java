@@ -1,6 +1,8 @@
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class VendingMachine {
@@ -174,18 +176,26 @@ public class VendingMachine {
         scanner.nextLine();
     }
 
-    public void removerProduto(String referencia) {
+    public boolean removerProduto(String referencia) {
         Produto removido = stock.remove(referencia);
         if (removido == null) {
-            System.out.println("Produto não encontrado no stock.");
+            try {
+                System.out.println("\n".repeat(75) + "Produto não encontrado no stock.\n\nTente Novamente...\n");
+                Thread.sleep(5000); // 1000 milissegundos equivalem a 1 segundos
+                return true;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } else {
             try {
                 System.out.println("\n".repeat(75) + "Produto " + removido.getNome() + " removido com sucesso.\n\n\n\n");
                 Thread.sleep(5000); // 1000 milissegundos equivalem a 1 segundos
+                return false;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
     public void visualizarHistorico() {
@@ -230,6 +240,17 @@ public class VendingMachine {
             Thread.sleep(5000); // 1000 milissegundos equivalem a 1 segundos
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    public boolean validarData(String data) {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yy");
+        formato.setLenient(false); // Não permite datas inválidas (ex: 32/13/99)
+        try {
+            formato.parse(data); // Tenta fazer o parsing da data
+            return true;
+        } catch (ParseException e) {
+            return false;
         }
     }
 }

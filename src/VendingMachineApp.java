@@ -31,105 +31,134 @@ public class VendingMachineApp {
                         System.out.print("\n".repeat(75));
                         System.out.print("Digite o nome do novo produto: ");
                         String nome = scanner.nextLine();
-                        System.out.print("Digite o preço (€): ");
-                        String preco = scanner.nextLine();
-                        if (!(vendingMachine.isDouble(preco))) {
-                            vendingMachine.limparTelaComTexto("Valor Inválido", true);
-                            continue;
+                        String preco;
+                        while (true) {
+                            System.out.print("Digite o preço (€): ");
+                            preco = scanner.nextLine();
+                            if (!(vendingMachine.isDouble(preco))) {
+                                vendingMachine.limparTelaComTexto("Valor Inválido", true);
+                                System.out.print("\n".repeat(75));
+                                continue;
+                            }
+                            break;
                         }
                         preco = preco.replace(",", ".");
                         double precodouble = Double.parseDouble(preco);
                         System.out.print("Digite a referência: ");
                         String referencia = scanner.nextLine().toUpperCase();
-                        System.out.print("Digite o prazo de validade (dd/mm/yy): ");
-                        String validade = scanner.nextLine();
-
-                        System.out.print("\nTipo:\n1-Chocolate\n2-Refrigerante\n3-Sandes\nDigite o valor: ");
-                        int tipo = scanner.nextInt();
-                        scanner.nextLine();
-
-                        Produto novoProduto = null;
-                        switch (tipo) {
-                            case 1:
-                                System.out.print("\nTipo de cacau:\n1-Negro\n2-Branco\n3-Ao Leite\nDigite o valor: ");
-                                String tipoCacau = scanner.nextLine();
-                                switch (tipoCacau) {
-                                    case "1":
-                                        tipoCacau = "Negro";
-                                        break;
-                                    case "2":
-                                        tipoCacau = "Branco";
-                                        break;
-                                    case "3":
-                                        tipoCacau = "Ao leite";
-                                        break;
-                                    default:
-                                        vendingMachine.limparTelaComTexto("Tipo de cacau inválido!", true);
-                                        continue;
-                                }
-                                System.out.print("\nMarca: ");
-                                String marcaChocolate = scanner.nextLine();
-                                novoProduto = new Chocolate(nome, precodouble, referencia, validade, tipoCacau, marcaChocolate);
+                        String validade;
+                        while (true) {
+                            System.out.print("Digite o prazo de validade (dd/mm/yy): ");
+                            validade = scanner.nextLine();
+                            if (vendingMachine.validarData(validade))
                                 break;
-                            case 2:
-                                boolean semAcucarBoo;
-                                System.out.print("Refrigerante sem açúcar? (S/N): ");
-                                String semAcucar = scanner.nextLine();
-                                switch (semAcucar) {
-                                    case "S":
-                                        semAcucarBoo = true;
-                                        break;
-                                    case "N":
-                                        semAcucarBoo = false;
-                                        break;
-                                    default:
-                                        vendingMachine.limparTelaComTexto("Valor Inválido", true);
-                                        continue;
-                                }
-                                System.out.print("\nMarca: ");
-                                String marcaRefrigerante = scanner.nextLine();
-                                novoProduto = new Refrigerante(nome, precodouble, referencia, validade, semAcucarBoo, marcaRefrigerante);
-                                break;
-                            case 3:
-                                String tipoSande;
-                                while (true) {
-                                    System.out.print("\nTipo de sandes:\n1-Mista\n2-Fiambre\n3-Queijo\nDigite o valor: ");
-                                    tipoSande = scanner.nextLine();
-                                    switch (tipoSande) {
-                                        case "1":
-                                            tipoSande = "Mista";
-                                            break;
-                                        case "2":
-                                            tipoSande = "Fiambre";
-                                            break;
-                                        case "3":
-                                            tipoSande = "Queijo";
-                                            break;
-                                        default:
-                                            vendingMachine.limparTelaComTexto("Valor Inválido", true);
-                                            System.out.print("\n".repeat(75));
-                                            continue;
-                                    }
-                                    break;
-                                }
-                                System.out.print("\nProdutor: ");
-                                String produtor = scanner.nextLine();
-                                novoProduto = new Sandes(nome, precodouble, referencia, validade, tipoSande, produtor);
-                                break;
-                            default:
-                                vendingMachine.limparTelaComTexto("Tipo de produto inválido!", true);
+                            else {
+                                vendingMachine.limparTelaComTexto("Data Inválida", true);
+                                System.out.print("\n".repeat(75));
                                 continue;
+                            }
                         }
-                        if (novoProduto != null) {
-                            vendingMachine.adicionarProduto(novoProduto);
-                            vendingMachine.limparTelaComTexto("Produto adicionado com sucesso!!", false);
-                            continue;
+                        Produto novoProduto = null;
+                        while (true) {
+                            System.out.print("\nTipo:\n1-Chocolate\n2-Refrigerante\n3-Sandes\nDigite o valor: ");
+                            String tipo = scanner.nextLine();
+
+                            switch (tipo) {
+                                case "1":
+                                    String tipoCacau;
+                                    while (true) {
+                                        System.out.print("\nTipo de cacau:\n1-Negro\n2-Branco\n3-Ao Leite\nDigite o valor: ");
+                                        tipoCacau = scanner.nextLine();
+                                        switch (tipoCacau) {
+                                            case "1":
+                                                tipoCacau = "Negro";
+                                                break;
+                                            case "2":
+                                                tipoCacau = "Branco";
+                                                break;
+                                            case "3":
+                                                tipoCacau = "Ao leite";
+                                                break;
+                                            default:
+                                                vendingMachine.limparTelaComTexto("Tipo de cacau inválido!", true);
+                                                System.out.print("\n".repeat(75));
+                                                continue;
+                                        }
+                                        break;
+                                    }
+                                    System.out.print("\nMarca: ");
+                                    String marcaChocolate = scanner.nextLine();
+                                    novoProduto = new Chocolate(nome, precodouble, referencia, validade, tipoCacau, marcaChocolate);
+                                    break;
+                                case "2":
+                                    boolean semAcucarBoo;
+                                    while (true) {
+                                        System.out.print("\nRefrigerante sem açúcar? (S/N): ");
+                                        String semAcucar = scanner.nextLine();
+                                        switch (semAcucar) {
+                                            case "S":
+                                                semAcucarBoo = true;
+                                                break;
+                                            case "N":
+                                                semAcucarBoo = false;
+                                                break;
+                                            default:
+                                                vendingMachine.limparTelaComTexto("Valor Inválido", true);
+                                                System.out.print("\n".repeat(75));
+                                                continue;
+                                        }
+                                        break;
+                                    }
+                                    System.out.print("\nMarca: ");
+                                    String marcaRefrigerante = scanner.nextLine();
+                                    novoProduto = new Refrigerante(nome, precodouble, referencia, validade, semAcucarBoo, marcaRefrigerante);
+                                    break;
+                                case "3":
+                                    String tipoSande;
+                                    while (true) {
+                                        System.out.print("\nTipo de sandes:\n1-Mista\n2-Fiambre\n3-Queijo\nDigite o valor: ");
+                                        tipoSande = scanner.nextLine();
+                                        switch (tipoSande) {
+                                            case "1":
+                                                tipoSande = "Mista";
+                                                break;
+                                            case "2":
+                                                tipoSande = "Fiambre";
+                                                break;
+                                            case "3":
+                                                tipoSande = "Queijo";
+                                                break;
+                                            default:
+                                                vendingMachine.limparTelaComTexto("Valor Inválido", true);
+                                                System.out.print("\n".repeat(75));
+                                                continue;
+                                        }
+                                        break;
+                                    }
+                                    System.out.print("\nProdutor: ");
+                                    String produtor = scanner.nextLine();
+                                    novoProduto = new Sandes(nome, precodouble, referencia, validade, tipoSande, produtor);
+                                    break;
+                                default:
+                                    vendingMachine.limparTelaComTexto("Tipo de produto inválido!", true);
+                                    System.out.print("\n".repeat(75));
+                                    continue;
+                            }
+                            break;
                         }
+                        vendingMachine.adicionarProduto(novoProduto);
+                        vendingMachine.limparTelaComTexto("Produto adicionado com sucesso!!", false);
+                        continue;
                     case "2":
-                        vendingMachine.listarProdutos();
-                        System.out.print("Digite a referência do produto a remover: ");
-                        String refRemover = scanner.nextLine();
-                        vendingMachine.removerProduto(refRemover);
+                        while (true) {
+                            vendingMachine.listarProdutos();
+                            System.out.print("Digite a referência do produto a remover: ");
+                            String refRemover = scanner.nextLine();
+                            if (vendingMachine.removerProduto(refRemover))
+                                continue;
+                            else
+                                break;
+                        }
                         continue;
                     case "3":
                         System.out.println("\n".repeat(75) + "Total das vendas: " +
@@ -141,7 +170,7 @@ public class VendingMachineApp {
                         continue;
                     case "5":
                         try {
-                            System.out.println("\n".repeat(75) + "Saindo e Salvando...\n\n\n");
+                            System.out.println("\n".repeat(75) + "Salvando e Saindo...\n\n\n");
                             Thread.sleep(5000); // 1000 milissegundos equivalem a 1 segundos
                             continue;
                         } catch (InterruptedException e) {
