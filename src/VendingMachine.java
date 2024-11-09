@@ -180,7 +180,7 @@ public class VendingMachine {
         Produto removido = stock.remove(referencia);
         if (removido == null) {
             try {
-                System.out.println("\n".repeat(75) + "Produto não encontrado no stock.\n\nTente Novamente...\n");
+                System.out.println("\n".repeat(75) + "Produto não encontrado no stock.\n\nTente Novamente...\n\n");
                 Thread.sleep(5000); // 1000 milissegundos equivalem a 1 segundos
                 return true;
             } catch (InterruptedException e) {
