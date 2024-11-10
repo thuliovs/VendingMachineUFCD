@@ -6,10 +6,14 @@ public class VendingMachineApp {
         // Declarações iniciais
 
         VendingMachine vendingMachine = new VendingMachine();
+        String senhacolaborador = "javanaopresta";
         Scanner scanner = new Scanner(System.in);
-        vendingMachine.inicializarStockCompleto();
         boolean colaborador_usou = false;
 
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            vendingMachine.limparTelaComTexto("Salvando dados antes de encerrar...", false);
+            vendingMachine.salvarDados();
+        }));
 
         while (true) {
             // Cabeçalho inicial + Pegar o dinheiro
@@ -19,14 +23,14 @@ public class VendingMachineApp {
             String textoInicial = scanner.nextLine();
 
             // Painel de opções de colaborador
-            if (textoInicial.equals("javanaopresta")) {
+            if (textoInicial.equals(senhacolaborador)) {
                 colaborador_usou = false;
                 while (colaborador_usou == false) {
                     System.out.print("\n".repeat(75));
                     System.out.print("Bem-vindo Colaborador,\no que pretende hoje? :)\n" +
                             "\n1. Adicionar Produto\n2. Remover Produto" +
                             "\n3. Consultar Total Vendas\n4. Ver Histórico de Vendas\n" +
-                            "5. Sair\nEscolha uma opção: ");
+                            "5. Remover Historico de Vendas\n6. Sair\nEscolha uma opção: ");
                     String opcao = scanner.nextLine();
                     switch (opcao) {
                         case "1":
@@ -63,9 +67,9 @@ public class VendingMachineApp {
                             Produto novoProduto = null;
                             while (true) {
                                 System.out.print("\nTipo:\n1-Chocolate\n2-Refrigerante\n3-Sandes\nDigite o valor: ");
-                                String tipo = scanner.nextLine();
+                                String categoria = scanner.nextLine();
 
-                                switch (tipo) {
+                                switch (categoria) {
                                     case "1":
                                         String tipoCacau;
                                         while (true) {
@@ -149,7 +153,6 @@ public class VendingMachineApp {
                                 break;
                             }
                             vendingMachine.adicionarProduto(novoProduto);
-                            vendingMachine.limparTelaComTexto("Produto adicionado com sucesso!!", false);
                             continue;
                         case "2":
                             while (true) {
@@ -171,6 +174,12 @@ public class VendingMachineApp {
                             vendingMachine.visualizarHistorico();
                             continue;
                         case "5":
+                            while(true) {
+                                if (vendingMachine.limparHistoricoVendas(senhacolaborador))
+                                    break;
+                            }
+                            continue;
+                        case "6":
                             try {
                                 System.out.println("\n".repeat(75) + "Salvando e Saindo...\n\n\n");
                                 Thread.sleep(5000); // 1000 milissegundos equivalem a 1 segundos

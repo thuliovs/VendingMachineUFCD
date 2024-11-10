@@ -1,4 +1,7 @@
+import java.io.Serializable;
+
 public class Sandes extends Produto {
+    private static final long serialVersionUID = 1L;
     private String tipoSande;
     private String produtor;
 

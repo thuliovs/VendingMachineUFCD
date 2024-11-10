@@ -1,4 +1,7 @@
-public abstract class Produto {
+import java.io.Serializable;
+
+public abstract class Produto implements Serializable {
+    private static final long serialVersionUID = 1L;  // Adiciona um serialVersionUID para controle de versão
     private String nome;
     private double preco;
     private String referencia;

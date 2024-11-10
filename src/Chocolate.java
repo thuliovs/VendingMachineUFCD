@@ -1,4 +1,7 @@
+import java.io.Serializable;
+
 public class Chocolate extends Produto {
+    private static final long serialVersionUID = 1L;  // Adiciona serialVersionUID para a classe
     private final String tipoCacau;
     private final String marca;
 
