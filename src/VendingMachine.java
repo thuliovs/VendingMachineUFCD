@@ -226,16 +226,6 @@ public class VendingMachine {
         return totalVendas;
     }
 
-    public void salvarStock() {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("stock.dat"))) {
-            out.writeObject(stock);
-            out.writeObject(historicoVendas);
-            out.writeDouble(totalVendas);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public boolean isDouble(String str) {
         try {
             str = str.replace(",", ".");
