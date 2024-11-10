@@ -246,7 +246,7 @@ public class VendingMachine {
             limparTelaComTexto("Produto adicionado com sucesso!!", false);
         }
         else {
-            limparTelaComTexto("Este tipo de produto j� est� na capacidade m�xima!!", true);
+            limparTelaComTexto("Este tipo de produto ja esta na capacidade maxima!!", true);
         }
     }
 
@@ -262,7 +262,7 @@ public class VendingMachine {
         if (valorInserido < produto.getPreco()) {
             try {
                 System.out.println("\n".repeat(75) + "Valor insuficiente. Precisa de mais "
-                        + (produto.getPreco() - valorInserido) + "€" + "\n\n\nInsira o nessesario na pr�xima...");
+                        + (produto.getPreco() - valorInserido) + "€" + "\n\n\nInsira o nessesario na proxima...");
                 Thread.sleep(5000); // 1000 milissegundos equivalem a 1 segundos
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -350,7 +350,7 @@ public class VendingMachine {
             return true;
         }
         else {
-            limparTelaComTexto("Senha In�lida!!", true);
+            limparTelaComTexto("Senha Invalida!!", true);
             return false;
         }
     }
