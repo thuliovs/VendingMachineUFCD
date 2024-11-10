@@ -187,13 +187,13 @@ public class VendingMachineApp {
                             }
                             continue;
                     }
-                    colaborador_usou = true;
+                    colaborador_usou = true; // declarando que o colaborador acabou de usar a maquina
                 }
             }
-            else if (vendingMachine.isDouble(textoInicial)) {
+            else if (vendingMachine.isDouble(textoInicial)) { // se for um double (dinheiro) ele seta como se o coloborador n�o estivesse acabado de usar
                 colaborador_usou = false;
             }
-            else {
+            else { // caso n�o seja a senha nem um double
                 try {
                     System.out.println("\n".repeat(75) + "Valor inválido!\n\nTente Novamente...");
                     Thread.sleep(5000); // 1000 milissegundos equivalem a 1 segundos
@@ -203,7 +203,7 @@ public class VendingMachineApp {
                 }
             }
 
-            if (colaborador_usou){
+            if (colaborador_usou){ // saindo do loop do colaborador caimos logo aqui, por isso queremos voltar ao inicio do loop geral pedindo o dinheiro
                 continue;
             }
 
@@ -211,47 +211,76 @@ public class VendingMachineApp {
             textoInicial = textoInicial.replace(",", ".");
             double valorInserido = Double.parseDouble(textoInicial);
 
+            while(true) {
+                // Cabeçalho Maquina de Vendas para clientes
 
-            // Cabeçalho Maquina de Vendas para clientes
-
-            vendingMachine.listarProdutos();
+                vendingMachine.listarProdutos();
 
 
-            // Opções
-            System.out.print("Escolha o tipo de produto:\n1. Chocolate\n2. Refrigerante\n3. Sande\n4. Sair\nEscolha uma opção: ");
-            String tipoProduto = scanner.nextLine();
-            switch (tipoProduto) {
-                case "1":
-                    vendingMachine.listarProdutosPorCategoria("Chocolate");
-                    vendingMachine.venderProduto(valorInserido);
-                    break;
-                case "2":
-                    vendingMachine.listarProdutosPorCategoria("Refrigerante");
-                    vendingMachine.venderProduto(valorInserido);
-                    break;
-                case "3":
-                    vendingMachine.listarProdutosPorCategoria("Sandes");
-                    vendingMachine.venderProduto(valorInserido);
-                    break;
-                case "4":
-                    System.out.println("\n".repeat(75) + "Devolvendo os " + valorInserido + "€ inseridos...");
-                    try {
-                        for (int i = 1; i <= 8; i++) {
-                            Thread.sleep(1000); // 1000 milissegundos equivalem a 1 segundos
-                            System.out.println("Devolvendo os " + valorInserido + "€ inseridos...");
+                // Opções
+
+                System.out.print("Escolha o tipo de produto:\n1. Chocolate\n2. Refrigerante\n3. Sande\n4. Sair\nEscolha uma opção: ");
+                String tipoProduto = scanner.nextLine();
+                boolean isVendidoOUErro = false;
+                switch (tipoProduto) {
+                    case "1":
+                        while (isVendidoOUErro == false) {
+                            vendingMachine.listarProdutosPorCategoria("Chocolate");
+                            switch (vendingMachine.venderProduto(valorInserido)) {
+                                case 1:
+                                    break;
+                                case 2:
+                                    isVendidoOUErro = true; // para voltar ao ecr� principal
+                                    break;
+                                case 3:
+                                    isVendidoOUErro = true;
+                                    break;
+                            }
                         }
-                        continue;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                default:
-                    try {
-                        System.out.println("\n".repeat(75) + "Tipo inválido!\n\nTente Novamente...");
-                        Thread.sleep(5000); // 1000 milissegundos equivalem a 1 segundos
-                        continue;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                        break;
+                    case "2":
+                        while (isVendidoOUErro == false) {
+                            vendingMachine.listarProdutosPorCategoria("Refrigerante");
+                            switch (vendingMachine.venderProduto(valorInserido)) {
+                                case 1:
+                                    break;
+                                case 2:
+                                    isVendidoOUErro = true; // para voltar ao ecr� principal
+                                    break;
+                                case 3:
+                                    isVendidoOUErro = true;
+                                    break;
+                            }
+                        }
+                        break;
+                    case "3":
+                        while (isVendidoOUErro == false) {
+                            vendingMachine.listarProdutosPorCategoria("Sandes");
+                            switch (vendingMachine.venderProduto(valorInserido)) {
+                                case 1:
+                                    break;
+                                case 2:
+                                    isVendidoOUErro = true; // para voltar ao ecr� principal
+                                    break;
+                                case 3:
+                                    isVendidoOUErro = true;
+                                    break;
+                            }
+                        }
+                        break;
+                    case "4":
+                        vendingMachine.devolverValor(valorInserido, false);
+                        break;
+                    default:
+                        try {
+                            System.out.println("\n".repeat(75) + "Tipo inválido!\n\nTente Novamente...");
+                            Thread.sleep(5000); // 1000 milissegundos equivalem a 1 segundos
+                            continue;
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                }
+                break; // sair da tela do usuario
             }
         }
     }

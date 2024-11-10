@@ -144,21 +144,34 @@ public class VendingMachine {
     }
 
     public void adicionarProduto(Produto produto) {
-        stock.put(produto.getReferencia(), produto);
+        if((produto instanceof Chocolate && count_chocolate <= 20) ||
+                (produto instanceof Refrigerante && count_refrigerantes <= 15) ||
+                (produto instanceof Sandes && count_sandes <= 10))
+            stock.put(produto.getReferencia(), produto);
+        else {
+            System.out.println("\n".repeat(75) + "Limite m�ximo deste tipo de produtos atingido!!");
+        }
     }
 
-    public void venderProduto(double valorInserido) {
+    public int venderProduto(double valorInserido) {
         System.out.print("Insira a referência do produto: ");
         String referencia = scanner.nextLine();
         Produto produto = stock.get(referencia);
         if (produto == null) {
-            System.out.println("Produto não encontrado!");
-            return;
+            limparTelaComTexto("Produto não encontrado!", true);
+            return(1);
         }
 
         if (valorInserido < produto.getPreco()) {
-            System.out.println("Valor insuficiente. Precisa de mais " + (produto.getPreco() - valorInserido));
-            return;
+            try {
+                System.out.println("\n".repeat(75) + "Valor insuficiente. Precisa de mais "
+                        + (produto.getPreco() - valorInserido) + "€" + "\n\n\nInsira o nessesario na pr�xima...");
+                Thread.sleep(5000); // 1000 milissegundos equivalem a 1 segundos
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            devolverValor(valorInserido, false);
+            return(2);
         }
 
         stock.remove(referencia);
@@ -174,6 +187,8 @@ public class VendingMachine {
         System.out.println("-".repeat(39) + "\n".repeat(5));
         System.out.println("Pressione ENTER para continuar...");
         scanner.nextLine();
+        devolverValor(troco, true);
+        return (3);
     }
 
     public boolean removerProduto(String referencia) {
@@ -251,6 +266,31 @@ public class VendingMachine {
             return true;
         } catch (ParseException e) {
             return false;
+        }
+    }
+
+    public void devolverValor(double valorInserido, boolean isTroco){
+        if(!isTroco) {
+            System.out.println("\n".repeat(75) + "Devolvendo os " + valorInserido + "€ inseridos...");
+            try {
+                for (int i = 1; i <= 8; i++) {
+                    Thread.sleep(1000); // 1000 milissegundos equivalem a 1 segundos
+                    System.out.println("Devolvendo os " + valorInserido + "€ inseridos...");
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            System.out.println("\n".repeat(75) + "Devolvendo os " + valorInserido + "€ de troco...");
+            try {
+                for (int i = 1; i <= 8; i++) {
+                    Thread.sleep(1000); // 1000 milissegundos equivalem a 1 segundos
+                    System.out.println("Devolvendo os " + valorInserido + "€ de troco...");
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
